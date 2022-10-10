@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      defer
+      src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+    <link
+      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+
+    <title>Document</title>
+  </head>
+  <body
+    class="bg-indigo-100 font-mono"
+    x-data="{
+        search: '',
+        workouts : [],
+        getSearch() {
+            return this.workouts.filter(
+                i => i.name.toLowerCase().includes(this.search) || i.level.toLowerCase().includes(this.search)
+            )
+        }
+  }"
+  >
+    <h1 class="font-medium leading-tight text-5xl mt-0 mb-2 text-center mt-16">
+      Workout Bank
+    </h1>
+
+    <div
+      class="flex justify-between items-center flex-wrap items-stretch m-16"
+      x-init="fetch('./workouts.json').then(response => response.json()).then(data => workouts = data)"
+    >
+      <input
+        type="search"
+        placeholder="Search by workout name or difficulty (beginner, intermediate, expert)"
+        class="border p-2 w-full mb-2 mt-6"
+        x-model="search"
+      />
+      <template x-for="workout in getSearch">
+        <div class="max-w-sm rounded overflow-hidden shadow-lg m-3 bg-gray-100">
+          <div class="px-6 py-4">
+            <label>Workout</label>
+            <p class="text-gray-700 text-base" x-text="workout.name"></p>
+            <label>Force Type</label>
+            <p class="text-gray-700 text-base" x-text="workout.force"></p>
+            <label>Difficulty</label>
+            <p class="text-gray-700 text-base" x-text="workout.level"></p>
+            <label>Mechanic</label>
+            <p class="text-gray-700 text-base" x-text="workout.mechanic"></p>
+            <label>Muscle Group</label>
+            <p
+              class="text-gray-700 text-base"
+              x-text="workout.primaryMuscles"
+            ></p>
+            <label>Instructions</label>
+            <p
+              class="text-gray-700 text-base"
+              x-text="workout.instructions"
+            ></p>
+            <label>Category</label>
+            <p class="text-gray-700 text-base" x-text="workout.category"></p>
+          </div>
+        </div>
+      </template>
+    </div>
+  </body>
+</html>
